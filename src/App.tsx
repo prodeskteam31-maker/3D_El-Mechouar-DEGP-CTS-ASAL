@@ -186,100 +186,64 @@ export default function App() {
               </div>
             </div>
 
-            {/* CONTACT — page d'accueil uniquement */}
-            <section id="contact" className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-8 pb-20 pt-10">
-              <Reveal>
-                <div className="text-center mb-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-cyan-500/15 border border-cyan-400/40 text-[10px] font-bold text-cyan-200 uppercase tracking-[0.2em] mb-4">
-                    <MapPin className="w-3 h-3" />
-                    Nous trouver
-                  </div>
-                  <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">
-                    Centre des Techniques Spatiales · <span className="text-cyan-300">Arzew</span>
-                  </h2>
-                </div>
-              </Reveal>
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-6">
+            {/* NOUS TROUVER & COORDONNÉES CTS */}
+            <div id="contact-section" className="bg-slate-950/60 border-t border-slate-800/50">
+              <div className="max-w-5xl mx-auto px-4 md:px-8 py-14">
                 <Reveal>
-                  <div className="bg-slate-900/60 backdrop-blur-md border border-white/20 rounded-2xl p-7 h-full flex flex-col gap-5 shadow-lg">
-                    <h3 className="text-lg font-bold text-white">Coordonnées</h3>
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center shrink-0">
-                        <MapPin className="w-4 h-4 text-cyan-300" />
+                  <div className="text-center mb-10">
+                    <span className="inline-block text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full uppercase tracking-widest mb-3">
+                      Contact &amp; Localisation
+                    </span>
+                    <h2 className="text-3xl md:text-4xl font-bold font-serif text-white">
+                      Nous Trouver
+                    </h2>
+                  </div>
+                </Reveal>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <Reveal delay={100}>
+                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-7 space-y-5">
+                      <h3 className="text-lg font-bold text-amber-400 font-serif">Centre des Techniques Spatiales</h3>
+                      <div className="space-y-4 text-sm text-slate-300">
+                        <div className="flex items-start gap-3">
+                          <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                          <span>Cité Satellitaire, BP 13 Arzew<br />31200 Oran — Algérie</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Phone className="w-4 h-4 text-amber-500 shrink-0" />
+                          <span>+213 (0)41 47 20 00</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Printer className="w-4 h-4 text-amber-500 shrink-0" />
+                          <span>+213 (0)41 47 20 10</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Globe className="w-4 h-4 text-amber-500 shrink-0" />
+                          <a href="http://www.cts.asal.dz" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 flex items-center gap-1">
+                            www.cts.asal.dz <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-1">Adresse</p>
-                        <p className="text-white text-[14px] leading-snug">
-                          10, Avenue de la Palestine<br />
-                          Cité des Jardins, BP 13, 31004, Arzew<br />
-                          Wilaya d'Oran, Algérie
+                    </div>
+                  </Reveal>
+
+                  <Reveal delay={200}>
+                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-7">
+                      <h3 className="text-lg font-bold text-amber-400 font-serif mb-4">Département Études et Gestion de Projets</h3>
+                      <p className="text-sm text-slate-400 leading-relaxed">
+                        Le Centre des Techniques Spatiales (CTS) est un établissement public sous tutelle de l'Agence Spatiale Algérienne (ASAL), spécialisé dans les applications des technologies spatiales au service du développement national.
+                      </p>
+                      <div className="mt-5 pt-4 border-t border-slate-800">
+                        <p className="text-xs text-slate-500">
+                          Ce projet de visite virtuelle patrimoniale est réalisé dans le cadre des activités du Département Études et Gestion de Projets (DEGP).
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center shrink-0">
-                        <Phone className="w-4 h-4 text-cyan-300" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-1">Téléphone</p>
-                        <a href="tel:+213041793042" className="text-white text-[14px] hover:text-cyan-300 transition-colors">
-                          +213 (0)41 79 30 42
-                        </a>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center shrink-0">
-                        <Printer className="w-4 h-4 text-cyan-300" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-1">Fax</p>
-                        <p className="text-white text-[14px]">+213 (0)41 79 21 76</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center shrink-0">
-                        <Globe className="w-4 h-4 text-cyan-300" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-1">Site officiel</p>
-                        <a href="https://www.asal.dz" target="_blank" rel="noopener noreferrer" className="text-white text-[14px] hover:text-cyan-300 transition-colors inline-flex items-center gap-1">
-                          www.asal.dz
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                    </div>
-                    <div className="mt-auto pt-4 border-t border-white/15">
-                      <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider mb-1">Horaires</p>
-                      <p className="text-white/85 text-[12px]">Dimanche — Jeudi : 08:00 – 16:30</p>
-                      <p className="text-white/55 text-[12px]">Fermé vendredi et samedi</p>
-                    </div>
-                  </div>
-                </Reveal>
-                <Reveal delay={120}>
-                  <div className="relative rounded-2xl overflow-hidden border border-white/20 shadow-lg h-full min-h-[420px] bg-white">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3203.158!2d-0.3163749!3d35.8583000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDUxJzI5LjkiTiAwwrAxOCc0OS43Ilc!5e0!3m2!1sfr!2sdz!4v1714000000000"
-                      className="absolute inset-0 w-full h-full"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      title="Carte Centre des Techniques Spatiales — Arzew"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                    <div className="absolute bottom-4 right-4 z-10">
-                      <a href="https://www.google.com/maps/place/Centre+des+Techniques+Spatiales+(CTS)/@35.8583,-0.3138,17z" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-lg font-bold text-[12px] shadow-xl transition-all">
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        Ouvrir dans Google Maps
-                      </a>
-                    </div>
-                    <div className="absolute top-4 left-4 z-10 bg-white/95 backdrop-blur-md border border-cyan-400/40 rounded-lg px-3 py-2 flex items-center gap-2 shadow-lg">
-                      <MapPin className="w-3.5 h-3.5 text-cyan-600" />
-                      <span className="text-slate-900 text-[11px] font-semibold">CTS — Arzew, Oran</span>
-                    </div>
-                  </div>
-                </Reveal>
+                  </Reveal>
+                </div>
               </div>
-            </section>
+            </div>
+
           </>
         )}
 
