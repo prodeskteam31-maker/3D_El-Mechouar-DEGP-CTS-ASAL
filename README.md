@@ -1,5 +1,7 @@
 # Plateforme Web 3D — Mosquée El Mechouar, Tlemcen
 
+[![DOI](https://zenodo.org/badge/1272356641.svg)](https://doi.org/10.5281/zenodo.20744149)
+
 Plateforme de documentation et de valorisation numérique du patrimoine architectural de la Mosquée El Mechouar (Tlemcen, Algérie), développée par le **Centre des Techniques Spatiales (CTS) — Département Études et Gestion de Projets**.
 
 ## Fonctionnalités
