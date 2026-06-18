@@ -6,7 +6,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/Projet-ASAL-CTS-DEGP/',
+    base: '/3D-ElMechouar-DEGP-CTS-ASAL/',
     plugins: [
       react(),
       tailwindcss(),
