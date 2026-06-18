@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+*.log
+.env
+.env.local
+.env.*
+
+# Large media files — host separately or use Git LFS
+Video/
+
+# Build artifacts
+assets/.aistudio/

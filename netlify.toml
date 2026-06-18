@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Serve visite-virtuel files directly (they exist as real files in dist/)
+[[redirects]]
+  from = "/visite-virtuel/*"
+  to = "/visite-virtuel/:splat"
+  status = 200
+  force = false
+
+# SPA fallback — all other routes go to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

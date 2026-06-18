@@ -1,0 +1,182 @@
+[
+  {
+    "id": "1",
+    "src": "/visite-virtuel/media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/f/4/0_0.jpg",
+    "title": "Galerie à Arcades — Palais El-Mechouar",
+    "category": "Intérieur",
+    "description": "Passage voûté à arcades en plein cintre, caractéristique de l'architecture hispano-mauresque du Palais El-Mechouar de Tlemcen.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "2",
+    "src": "/visite-virtuel/media/panorama_050A81B2_13FA_044E_41A1_05D8533C06F9_0/f/4/0_0.jpg",
+    "title": "Entrée Principale — Ruines Extérieures",
+    "category": "Extérieur",
+    "description": "Vue panoramique 360° de l'entrée du palais, avec ses ruines en pisé et ses arches de pierre séculaires.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "3",
+    "src": "/visite-virtuel/media/panorama_E8823F78_E46C_4BB6_41C6_4830AB1747E2_0/f/4/0_0.jpg",
+    "title": "Salle de Prière — Mosquée El-Mechouar",
+    "category": "Intérieur",
+    "description": "L'intérieur de la mosquée du palais avec ses murs blancs immaculés et ses arches en stuc finement ouvragées.",
+    "location": "Mosquée El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "4",
+    "src": "/visite-virtuel/media/panorama_EF3427EA_E465_DAAB_41BE_9023A602F793_0/f/4/0_0.jpg",
+    "title": "Grande Salle d'Apparat",
+    "category": "Intérieur",
+    "description": "Vaste salle cérémonielle dotée de niches murales en arc et de plafonds à caissons, ornée de géométries andalouses.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "5",
+    "src": "/visite-virtuel/media/panorama_F4C78660_E4A5_BDD7_41B2_75951D0091B1_0/f/4/0_0.jpg",
+    "title": "Hall Central du Palais",
+    "category": "Intérieur",
+    "description": "L'espace central du palais avec ses alcôves profondes et ses murs blancs baignés de lumière naturelle.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "6",
+    "src": "/visite-virtuel/media/panorama_006E22DC_13E6_05FB_41B3_03C47A8C3A7A_0/f/4/0_0.jpg",
+    "title": "Remparts et Tours Extérieures",
+    "category": "Extérieur",
+    "description": "Vue extérieure sur les imposantes murailles du Palais El-Mechouar, flanquées de tours crénelées d'époque mérinide.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "7",
+    "src": "/visite-virtuel/media/panorama_0033F06E_13FA_04D9_4171_5AED89E9C32B_0/f/4/0_0.jpg",
+    "title": "Portail Monumental en Pierre",
+    "category": "Extérieur",
+    "description": "Porte à arc surbaissé en pierre de taille, formant l'un des accès historiques au cœur du palais.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "8",
+    "src": "/visite-virtuel/media/panorama_062113FF_13E6_0BB6_41B3_67F554F5C35A_0/f/4/0_0.jpg",
+    "title": "Esplanade du Palais et Minaret",
+    "category": "Extérieur",
+    "description": "Vue dégagée sur le complexe du palais et le minaret de la mosquée El-Mechouar se profilant à l'horizon de Tlemcen.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "9",
+    "src": "/visite-virtuel/media/panorama_067971CB_13FA_07DF_41A0_CA83B9402FD4_0/f/4/0_0.jpg",
+    "title": "Jardins et Dépendances du Palais",
+    "category": "Extérieur",
+    "description": "La végétation luxuriante des jardins du palais offre un contraste saisissant avec la pierre ocre des bâtiments environnants.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "10",
+    "src": "/visite-virtuel/media/panorama_070619BF_13E6_07B7_41AB_58DE2A620DD3_0/f/4/0_0.jpg",
+    "title": "Ruines d'une Arche Mérinide",
+    "category": "Extérieur",
+    "description": "Une arche mérinide en brique crue, vestige de l'ancienne architecture du palais, témoignant de siècles d'histoire.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "11",
+    "src": "/visite-virtuel/media/panorama_077844D0_13E6_0DCA_41B3_C0ADBBEEC265_0/f/4/0_0.jpg",
+    "title": "Passage Souterrain Voûté",
+    "category": "Souterrain",
+    "description": "Couloir souterrain voûté reliant les différentes ailes du palais, à l'abri de la chaleur estivale de Tlemcen.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "12",
+    "src": "/visite-virtuel/media/panorama_07CF1653_13E6_0CCE_41AC_920214F4E0C3_0/f/4/0_0.jpg",
+    "title": "Parvis du Palais avec Minaret",
+    "category": "Extérieur",
+    "description": "L'esplanade centrale du palais El-Mechouar avec vue sur le minaret de la mosquée entouré de cèdres et d'oliviers.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "13",
+    "src": "/visite-virtuel/media/panorama_09B9EA94_14AE_0449_41B4_17939BD327DA_0/f/0/0_0.jpg",
+    "title": "Portique à Colonnes et Jardin",
+    "category": "Extérieur",
+    "description": "Portique à colonnes de marbre ouvrant sur le jardin intérieur, espace de fraîcheur et de recueillement du palais.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "14",
+    "src": "/visite-virtuel/media/panorama_13F10D7A_092D_25BB_419D_87D19EFAB0E0_0/f/4/0_0.jpg",
+    "title": "Couloir Intérieur Voûté",
+    "category": "Intérieur",
+    "description": "Passage intérieur sombre reliant les salles du palais, avec ses voûtes en berceau caractéristiques de l'architecture tlemcénienne.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "15",
+    "src": "/visite-virtuel/media/panorama_14B64C26_0916_EB4A_41AA_05276250AEB7_0/f/4/0_0.jpg",
+    "title": "Caves Souterraines du Palais",
+    "category": "Souterrain",
+    "description": "Espace souterrain du palais, utilisé historiquement comme dépôt ou cellier, aux murs de pierre brute et voûtes en plein cintre.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "16",
+    "src": "/visite-virtuel/media/panorama_14C28D66_0917_25CA_418C_109AF8119ED8_0/f/4/0_0.jpg",
+    "title": "Cour Intérieure à Colonnes",
+    "category": "Intérieur",
+    "description": "La cour intérieure (riad) du palais, entourée de colonnes blanches et ouverte sur le ciel, typique de l'architecture du Maghreb.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "17",
+    "src": "/visite-virtuel/media/panorama_16CF7239_0916_DFBD_41A8_F78268BA3D43_0/f/4/0_0.jpg",
+    "title": "Salle des Fêtes — Palais El-Mechouar",
+    "category": "Intérieur",
+    "description": "Grande salle lumineuse aux arcs brisés ourlés de stalactites en stuc, où se tenaient les cérémonies royales.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  },
+  {
+    "id": "18",
+    "src": "/visite-virtuel/media/panorama_177670E0_092F_5CC6_41A8_2D4FBEE8B32A_0/f/4/0_0.jpg",
+    "title": "Salle du Trône — Palais El-Mechouar",
+    "category": "Intérieur",
+    "description": "La salle principale du palais, avec son plafond en bois de cèdre sculpté et ses murs revêtus de plâtres dorés.",
+    "location": "Palais El-Mechouar, Tlemcen",
+    "date": "2024",
+    "photographer": "CTS — Visite Virtuelle"
+  }
+]
