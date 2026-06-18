@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Modèle 3D — Palais El-Méchouar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@300;400&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #0a0a12;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* ── HEADER ── */
+        #header {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 10;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            background: linear-gradient(180deg, rgba(10,10,18,0.95) 0%, rgba(10,10,18,0) 100%);
+            pointer-events: none;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(180,140,60,0.35);
+        }
+
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 15px;
+            color: rgba(240,230,200,0.7);
+            letter-spacing: 0.04em;
+        }
+
+        .header-author {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #b48c3c;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #b48c3c;
+            animation: blink 2.5s ease infinite;
+        }
+
+        .badge-text {
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(180,140,60,0.6);
+        }
+
+        /* ── IFRAME VIEWER ── */
+        #model-frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0a0a12;
+        }
+
+        /* ── LOADING OVERLAY ── */
+        #loading {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            background: #0a0a12;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-arch {
+            opacity: 0.3;
+        }
+
+        .loading-text {
+            font-size: 9px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: rgba(180,140,60,0.5);
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(180,140,60,0.15);
+            border-top-color: #b48c3c;
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        /* ── BOTTOM BAR ── */
+        #footer {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 10;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(0deg, rgba(10,10,18,0.9) 0%, rgba(10,10,18,0) 100%);
+            pointer-events: none;
+        }
+
+        .footer-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-text {
+            font-size: 8px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(180,140,60,0.3);
+        }
+
+        .footer-sep {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(180,140,60,0.2);
+        }
+
+        /* ── ERROR STATE ── */
+        #error-state {
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            background: #0a0a12;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            text-align: center;
+            padding: 40px;
+        }
+
+        #error-state.show { display: flex; }
+
+        .error-icon {
+            width: 48px;
+            height: 48px;
+            border: 1px solid rgba(180,140,60,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-icon svg { fill: rgba(180,140,60,0.5); }
+
+        .error-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: rgba(240,230,200,0.6);
+            font-style: italic;
+        }
+
+        .error-sub {
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: rgba(180,140,60,0.4);
+            text-transform: uppercase;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.4; }
+            50%       { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div id="header">
+        <div class="header-left">
+            <span class="header-author">Hanna Benkreira</span>
+            <div class="header-divider"></div>
+            <span class="header-title">Palais El-Méchouar</span>
+        </div>
+        <div class="header-badge">
+            <div class="badge-dot"></div>
+            <span class="badge-text">Modèle 3D</span>
+        </div>
+    </div>
+
+    <!-- Loading state -->
+    <div id="loading">
+        <svg class="loading-arch" width="120" height="60" viewBox="0 0 120 60" fill="none">
+            <path d="M10 58 L10 30 Q10 4 60 4 Q110 4 110 30 L110 58"
+                  stroke="rgba(180,140,60,0.5)" stroke-width="1"/>
+            <circle cx="60" cy="4" r="3" fill="rgba(180,140,60,0.5)"/>
+        </svg>
+        <div class="loading-spinner"></div>
+        <span class="loading-text">Chargement du modèle</span>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state">
+        <div class="error-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20">
+                <path d="M10 2 L18 17 L2 17 Z M10 8 L10 12 M10 14 L10 15" stroke="rgba(180,140,60,0.5)" stroke-width="1.5" fill="none"/>
+            </svg>
+        </div>
+        <p class="error-title">Modèle indisponible</p>
+        <p class="error-sub">Vérifiez votre connexion internet</p>
+    </div>
+
+    <!-- 3D Model iframe -->
+    <iframe id="model-frame" allowfullscreen allow="autoplay; xr-spatial-tracking; fullscreen"></iframe>
+
+    <!-- Footer -->
+    <div id="footer">
+        <div class="footer-line">
+            <span class="footer-text">Visite virtuelle</span>
+            <div class="footer-sep"></div>
+            <span class="footer-text">Tlemcen, Algérie</span>
+            <div class="footer-sep"></div>
+            <span class="footer-text">Hanna Benkreira</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var modelId = params.get('id');
+            var frame = document.getElementById('model-frame');
+            var loading = document.getElementById('loading');
+            var errorState = document.getElementById('error-state');
+
+            if (!modelId) {
+                loading.classList.add('hidden');
+                errorState.classList.add('show');
+                return;
+            }
+
+            var url = 'https://fathidz14.github.io/Modeles/' + modelId + '/index.html';
+            frame.src = url;
+
+            frame.addEventListener('load', function () {
+                loading.classList.add('hidden');
+            });
+
+            setTimeout(function () {
+                if (!loading.classList.contains('hidden')) {
+                    loading.classList.add('hidden');
+                    errorState.classList.add('show');
+                }
+            }, 15000);
+        })();
+    </script>
+</body>
+</html>

@@ -1,14 +1,10 @@
-import { useState, useEffect, useRef, MouseEvent, ReactNode } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import {
   Trash2,
   MapPin,
   ChevronRight,
   ChevronLeft,
   X,
-  Phone,
-  Printer,
-  Globe,
-  ExternalLink
 } from "lucide-react";
 
 import galleryData from "./data/gallery.json";
@@ -32,25 +28,6 @@ interface GalleryImage {
 }
 
 
-
-function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { setVisible(true); obs.disconnect(); }
-    }, { threshold: 0.1 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return (
-    <div ref={ref} style={{ transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)" }}>
-      {children}
-    </div>
-  );
-}
 
 // MAIN COMPONENT
 export default function App() {
@@ -183,64 +160,6 @@ export default function App() {
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)] font-serif leading-none whitespace-nowrap">
                   Mosquée <span className="text-amber-500 font-semibold">El Mechouar</span>
                 </h1>
-              </div>
-            </div>
-
-            {/* NOUS TROUVER & COORDONNÉES CTS */}
-            <div id="contact-section" className="bg-slate-950/60 border-t border-slate-800/50">
-              <div className="max-w-5xl mx-auto px-4 md:px-8 py-14">
-                <Reveal>
-                  <div className="text-center mb-10">
-                    <span className="inline-block text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full uppercase tracking-widest mb-3">
-                      Contact &amp; Localisation
-                    </span>
-                    <h2 className="text-3xl md:text-4xl font-bold font-serif text-white">
-                      Nous Trouver
-                    </h2>
-                  </div>
-                </Reveal>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <Reveal delay={100}>
-                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-7 space-y-5">
-                      <h3 className="text-lg font-bold text-amber-400 font-serif">Centre des Techniques Spatiales</h3>
-                      <div className="space-y-4 text-sm text-slate-300">
-                        <div className="flex items-start gap-3">
-                          <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                          <span>Cité Satellitaire, BP 13 Arzew<br />31200 Oran — Algérie</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Phone className="w-4 h-4 text-amber-500 shrink-0" />
-                          <span>+213 (0)41 47 20 00</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Printer className="w-4 h-4 text-amber-500 shrink-0" />
-                          <span>+213 (0)41 47 20 10</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <Globe className="w-4 h-4 text-amber-500 shrink-0" />
-                          <a href="http://www.cts.asal.dz" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 flex items-center gap-1">
-                            www.cts.asal.dz <ExternalLink className="w-3 h-3" />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </Reveal>
-
-                  <Reveal delay={200}>
-                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-7">
-                      <h3 className="text-lg font-bold text-amber-400 font-serif mb-4">Département Études et Gestion de Projets</h3>
-                      <p className="text-sm text-slate-400 leading-relaxed">
-                        Le Centre des Techniques Spatiales (CTS) est un établissement public sous tutelle de l'Agence Spatiale Algérienne (ASAL), spécialisé dans les applications des technologies spatiales au service du développement national.
-                      </p>
-                      <div className="mt-5 pt-4 border-t border-slate-800">
-                        <p className="text-xs text-slate-500">
-                          Ce projet de visite virtuelle patrimoniale est réalisé dans le cadre des activités du Département Études et Gestion de Projets (DEGP).
-                        </p>
-                      </div>
-                    </div>
-                  </Reveal>
-                </div>
               </div>
             </div>
 

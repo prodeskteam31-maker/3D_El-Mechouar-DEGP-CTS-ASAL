@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visite Virtuelle - Palais El-Mechouar | Hanna Benkreira</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=0.5, width=device-width, viewport-fit=cover" />
+    <link rel="preload" href="script.js?v=1594831972454" as="script"/>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/l/4/0_0.jpg?v=1594831972454" as="image"/>
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/r/4/0_0.jpg?v=1594831972454" as="image"/>
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/u/4/0_0.jpg?v=1594831972454" as="image"/>
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/d/4/0_0.jpg?v=1594831972454" as="image"/>
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/f/4/0_0.jpg?v=1594831972454" as="image"/>
+    <link rel="preload" href="media/panorama_1B55E8BA_096D_2CBA_41A8_C7A083DFFA18_0/b/4/0_0.jpg?v=1594831972454" as="image"/>
+    <script src="scorm.js" type="text/javascript"></script>
+    <meta name="description" content="Visite virtuelle du Palais El-Mechouar, Tlemcen"/>
+    <meta name="theme-color" content="#0a0a12"/>
+    <script src="lib/tdvplayer.js?v=1594831972454"></script>
+    <script type="text/javascript">
+        var player;
+        var playersPlayingTmp = [];
+        var isInitialized = false;
+        var isPaused = false;
+
+        function loadTour()
+        {
+            if(player)
+                return;
+
+            var beginFunc = function(event){
+                if(event.name == 'begin')
+                {
+                    var camera = event.data.source.get('camera');
+                    if(camera && camera.get('initialSequence') && camera.get('initialSequence').get('movements').length > 0)
+                        return;
+                }
+
+                if(event.sourceClassName == "MediaAudio")
+                    return;
+
+                isInitialized = true;
+
+                player.unbind('preloadMediaShow', beginFunc, player, true);
+                player.unbindOnObjectsOf('PanoramaPlayListItem', 'begin', beginFunc, player, true);
+                player.unbind('stateChange', beginFunc, player, true);
+                window.parent.postMessage("tourLoaded", '*');
+
+                disposePreloader();
+
+                onVirtualTourLoaded();
+            };
+
+            var settings = new TDV.PlayerSettings();
+            settings.set(TDV.PlayerSettings.ACTIVE_VIDEO_ELEMENT, document.getElementById("video_482CEBBE_52E0_E0D0_41CB_42E3377BB216"));
+            settings.set(TDV.PlayerSettings.CONTAINER, document.getElementById('viewer'));
+            settings.set(TDV.PlayerSettings.SCRIPT_URL, 'script.js?v=1594831972454');
+            settings.set(TDV.PlayerSettings.WEBVR_POLYFILL_URL, 'lib/WebVRPolyfill.js?v=1594831972454');
+            settings.set(TDV.PlayerSettings.HLS_URL, 'lib/Hls.js?v=1594831972454');
+            settings.set(TDV.PlayerSettings.QUERY_STRING_PARAMETERS, 'v=1594831972454');
+            window.tdvplayer = player = TDV.PlayerAPI.create(settings);
+            player.bind('preloadMediaShow', beginFunc, player, true);
+            player.bind('stateChange', beginFunc, player, true);
+            player.bindOnObjectsOf('PanoramaPlayListItem', 'begin', beginFunc, player, true);
+            player.bindOnObject('rootPlayer', 'start', function(e){
+                var queryDict = {}; location.search.substr(1).split("&").forEach(function(item) {var k = item.split("=")[0], v = decodeURIComponent(item.split("=")[1]);queryDict[k] = v});
+                var item = undefined;
+                if("media-index" in queryDict){
+                    item = setMediaByIndex(parseInt(queryDict["media-index"]) - 1);
+                }
+                else if("media-name" in queryDict){
+                    item = setMediaByName(queryDict["media-name"]);
+                }
+                else{
+                    item = setMediaByIndex(0);
+                }
+                if(item != undefined && "trigger-overlay-name" in queryDict){
+                    triggerOverlayByName(item, queryDict["trigger-overlay-name"], "trigger-overlay-event" in queryDict ? queryDict["trigger-overlay-event"] : "click");
+                }
+
+                player.getById('rootPlayer').bind('tourEnded', function(){
+                    onVirtualTourEnded();
+                }, player, true);
+            }, player, false);
+
+            window.addEventListener('message', function (e) {
+                var action = e.data;
+                if (action == 'pauseTour' || action == 'resumeTour') {
+                    this[action].apply(this);
+                }
+            });
+        }
+
+        function pauseTour()
+        {
+            isPaused = true;
+            if(!isInitialized)
+                return;
+
+            var playLists = player.getByClassName('PlayList');
+            for(var i = 0, count = playLists.length; i<count; i++)
+            {
+                var playList = playLists[i];
+                var index = playList.get('selectedIndex');
+                if(index != -1)
+                {
+                    var item = playList.get('items')[index];
+                    var itemPlayer = item.get('player');
+                    if(itemPlayer && itemPlayer.pause)
+                    {
+                        playersPlayingTmp.push(itemPlayer);
+                        itemPlayer.pause();
+                    }
+                }
+            }
+
+            player.getById('pauseGlobalAudios')();
+        }
+
+        function resumeTour()
+        {
+            isPaused = false;
+            if(!isInitialized)
+                return;
+
+            while(playersPlayingTmp.length)
+            {
+                var viewer = playersPlayingTmp.pop();
+                viewer.play();
+            }
+
+            player.getById('resumeGlobalAudios')();
+        }
+
+        function onVirtualTourLoaded()
+        {
+            if(isPaused)
+                pauseTour();
+        }
+
+        function onVirtualTourEnded()
+        {
+        }
+
+        function getRootPlayer()
+        {
+            return window.tdvplayer !== undefined ? window.tdvplayer.getById('rootPlayer') : undefined;
+        }
+
+        function setMediaByIndex(index)
+        {
+            var rootPlayer = getRootPlayer();
+            if(rootPlayer !== undefined) {
+                return rootPlayer.setMainMediaByIndex(index);
+            }
+        }
+
+        function setMediaByName(name)
+        {
+            var rootPlayer = getRootPlayer();
+            if(rootPlayer !== undefined) {
+                return rootPlayer.setMainMediaByName(name);
+            }
+        }
+
+        function triggerOverlayByName(item, name, eventName)
+        {
+            var rootPlayer = getRootPlayer();
+            if(rootPlayer !== undefined) {
+                item.bind('begin', function(e){
+                    item.unbind('begin', arguments.callee, this);
+                    var overlay = rootPlayer.getPanoramaOverlayByName(item.get('media'), name);
+                    if(overlay)
+                        rootPlayer.triggerOverlay(overlay, eventName);
+                }, rootPlayer);
+            }
+        }
+
+        function showPreloader()
+        {
+            var preloadContainer = document.getElementById('preloadContainer');
+            if(preloadContainer != undefined)
+                preloadContainer.style.opacity = 1;
+        }
+
+        function disposePreloader()
+        {
+            var preloadContainer = document.getElementById('preloadContainer');
+            if(preloadContainer == undefined)
+                return;
+
+            var transitionEndName = transitionEndEventName();
+            if(transitionEndName)
+            {
+                preloadContainer.addEventListener(transitionEndName, hide, false);
+                preloadContainer.style.opacity = 0;
+                setTimeout(hide, 600);
+            }
+            else
+            {
+                hide();
+            }
+
+            function hide()
+            {
+                document.getElementById("video_482CEBBE_52E0_E0D0_41CB_42E3377BB216").pause();
+                preloadContainer.style.visibility = 'hidden';
+                preloadContainer.style.display = 'none';
+            }
+
+            function transitionEndEventName () {
+                var el = document.createElement('div');
+                var transitions = {
+                    'transition':'transitionend',
+                    'OTransition':'otransitionend',
+                    'MozTransition':'transitionend',
+                    'WebkitTransition':'webkitTransitionEnd'
+                };
+                var t;
+                for (t in transitions) {
+                    if (el.style[t] !== undefined) {
+                        return transitions[t];
+                    }
+                }
+                return undefined;
+            }
+        }
+
+        function onBodyClick(){
+            document.body.removeEventListener("click", onBodyClick);
+            document.body.removeEventListener("touchend", onBodyClick);
+            loadTour();
+        }
+
+        function onLoad() {
+            if (/AppleWebKit/.test(navigator.userAgent) && /Mobile\/\w+/.test(navigator.userAgent))
+            {
+                var inIFrame = false;
+                try { inIFrame = (window.self !== window.top); }
+                catch (e) { inIFrame = true; }
+                if (!inIFrame)
+                {
+                    var onResize = function()
+                    {
+                        [0, 250, 1000, 2000].forEach(function(delay)
+                        {
+                            setTimeout(function()
+                            {
+                                var viewer = document.querySelector('#viewer');
+                                var scale = window.innerWidth / document.documentElement.clientWidth;
+                                var width = document.documentElement.clientWidth;
+                                var height = Math.round(window.innerHeight / scale);
+                                viewer.style.width = width + 'px';
+                                viewer.style.height = height + 'px';
+                                viewer.style.left = Math.round((window.innerWidth - width) * 0.5) + 'px';
+                                viewer.style.top = Math.round((window.innerHeight - height) * 0.5) + 'px';
+                                viewer.style.transform = 'scale(' + scale + ', ' + scale + ')';
+                                window.scrollTo(0,0);
+                            }, delay);
+                        });
+                    };
+                    window.addEventListener('resize', onResize);
+                    onResize();
+                }
+            }
+
+            // Masquer immédiatement l'écran d'intro et démarrer la visite directement
+            var preloadContainer = document.getElementById('preloadContainer');
+            if (preloadContainer) {
+                preloadContainer.style.display = 'none';
+            }
+            loadTour();
+        }
+
+        function playVideo(video) {
+            function isSafariDesktopV11orGreater() {
+                return /^((?!chrome|android|crios|ipad|iphone).)*safari/i.test(navigator.userAgent) && parseFloat(/Version\/([0-9]+\.[0-9]+)/i.exec(navigator.userAgent)[1]) >= 11;
+            }
+
+            function detectUserAction() {
+                var onVideoClick = function(e) {
+                    if(video.paused) { video.play(); }
+                    video.muted = false;
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    video.removeEventListener('click', onVideoClick);
+                    video.removeEventListener('touchend', onVideoClick);
+                };
+                video.addEventListener("click", onVideoClick);
+                video.addEventListener("touchend", onVideoClick);
+            }
+
+            if (isSafariDesktopV11orGreater()) {
+                video.muted = true;
+                video.play();
+            } else {
+                var canPlay = true;
+                var promise = video.play();
+                if (promise) {
+                    promise.catch(function() {
+                        video.muted = true;
+                        video.play();
+                        detectUserAction();
+                    });
+                } else {
+                    canPlay = false;
+                }
+                if (!canPlay || video.muted) {
+                    detectUserAction();
+                }
+            }
+        }
+
+        function isOVRWeb(){
+            return window.location.hash.substring(1).split('&').indexOf('ovrweb') > -1;
+        }
+    </script>
+
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;600&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            background: #0a0a12;
+            overflow: hidden;
+        }
+
+        #viewer {
+            background-color: #0a0a12;
+            z-index: 1;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }
+
+        /* ── PRELOADER ── */
+        #preloadContainer {
+            z-index: 2;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.6s ease;
+            -webkit-transition: opacity 0.6s ease;
+            background: #0a0a12;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Hidden video keeps the original tour-loading mechanism intact */
+        #video_482CEBBE_52E0_E0D0_41CB_42E3377BB216 {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            left: -9999px;
+        }
+
+        /* ── GEOMETRIC BACKGROUND ── */
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 50%, rgba(180,140,60,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(180,140,60,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 80% 20%, rgba(180,140,60,0.04) 0%, transparent 60%);
+        }
+
+        .bg-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(
+                    60deg,
+                    transparent,
+                    transparent 80px,
+                    rgba(180,140,60,0.03) 80px,
+                    rgba(180,140,60,0.03) 81px
+                ),
+                repeating-linear-gradient(
+                    -60deg,
+                    transparent,
+                    transparent 80px,
+                    rgba(180,140,60,0.03) 80px,
+                    rgba(180,140,60,0.03) 81px
+                );
+        }
+
+        /* ── DECORATIVE ARCH ── */
+        .arch-wrap {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+
+        .arch-svg {
+            width: min(340px, 80vw);
+            opacity: 0;
+            animation: fadeUp 1s ease 0.2s forwards;
+        }
+
+        /* ── CONTENT CARD ── */
+        .card {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 40px 50px 44px;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.5s forwards;
+            max-width: min(560px, 90vw);
+        }
+
+        .card::before,
+        .card::after {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #b48c3c 30%, #d4a94e 50%, #b48c3c 70%, transparent);
+            margin: 0 auto;
+            width: 70%;
+        }
+
+        .card::before { margin-bottom: 32px; }
+        .card::after  { margin-top: 32px; }
+
+        .location {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            font-size: clamp(10px, 1.4vw, 12px);
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #b48c3c;
+            margin-bottom: 16px;
+        }
+
+        .title-arabic {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: clamp(28px, 5vw, 46px);
+            color: #f0e6c8;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            letter-spacing: 0.02em;
+        }
+
+        .title-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            font-size: clamp(11px, 1.6vw, 13px);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(240,230,200,0.45);
+            margin-bottom: 28px;
+        }
+
+        .divider-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .divider-ornament span {
+            display: block;
+            height: 1px;
+            width: 60px;
+            background: linear-gradient(90deg, transparent, rgba(180,140,60,0.5));
+        }
+
+        .divider-ornament span:last-child {
+            background: linear-gradient(270deg, transparent, rgba(180,140,60,0.5));
+        }
+
+        .divider-ornament svg {
+            width: 16px;
+            height: 16px;
+            fill: #b48c3c;
+            opacity: 0.8;
+        }
+
+        .author-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            font-size: clamp(9px, 1.2vw, 10px);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(180,140,60,0.6);
+            margin-bottom: 8px;
+        }
+
+        .author-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: clamp(20px, 3vw, 28px);
+            color: #d4a94e;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── LOADING STATE ── */
+        .loading-bar-wrap {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1.2s forwards;
+        }
+
+        .loading-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(180,140,60,0.4);
+        }
+
+        .loading-bar {
+            width: 120px;
+            height: 1px;
+            background: rgba(180,140,60,0.15);
+            overflow: hidden;
+        }
+
+        .loading-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #b48c3c, #d4a94e);
+            width: 0%;
+            animation: loadBar 3s ease-in-out 1.2s infinite;
+        }
+
+        /* ── CORNER ORNAMENTS ── */
+        .corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            z-index: 3;
+            opacity: 0;
+            animation: fadeIn 1s ease 0.3s forwards;
+        }
+        .corner svg { fill: none; stroke: rgba(180,140,60,0.35); stroke-width: 1; }
+        .corner-tl { top: 24px; left: 24px; }
+        .corner-tr { top: 24px; right: 24px; transform: scaleX(-1); }
+        .corner-bl { bottom: 24px; left: 24px; transform: scaleY(-1); }
+        .corner-br { bottom: 24px; right: 24px; transform: scale(-1,-1); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes loadBar {
+            0%   { width: 0%; transform: translateX(0); }
+            60%  { width: 80%; transform: translateX(0); }
+            100% { width: 80%; transform: translateX(150px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50%       { opacity: 1; }
+        }
+    </style>
+</head>
+<body onload="onLoad()">
+
+    <!-- Corner ornaments -->
+    <div class="corner corner-tl">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 38 L2 2 L38 2"/>
+            <path d="M8 38 L8 8 L38 8" opacity="0.4"/>
+        </svg>
+    </div>
+    <div class="corner corner-tr">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 38 L2 2 L38 2"/>
+            <path d="M8 38 L8 8 L38 8" opacity="0.4"/>
+        </svg>
+    </div>
+    <div class="corner corner-bl">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 38 L2 2 L38 2"/>
+            <path d="M8 38 L8 8 L38 8" opacity="0.4"/>
+        </svg>
+    </div>
+    <div class="corner corner-br">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 38 L2 2 L38 2"/>
+            <path d="M8 38 L8 8 L38 8" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <div id="preloadContainer">
+        <div class="bg-pattern"></div>
+        <div class="bg-lines"></div>
+
+        <!-- Hidden video (required for tour loading logic) -->
+        <video
+            id="video_482CEBBE_52E0_E0D0_41CB_42E3377BB216"
+            onended="onBodyClick()"
+            autoplay
+            muted
+            playsinline
+            webkit-playsinline
+            poster="media/video_482CEBBE_52E0_E0D0_41CB_42E3377BB216_poster.jpg"
+            preload="auto">
+            <source src="media/video_482CEBBE_52E0_E0D0_41CB_42E3377BB216.mp4" type="video/mp4">
+        </video>
+
+        <!-- Decorative arch -->
+        <div class="arch-wrap">
+            <svg class="arch-svg" viewBox="0 0 340 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer arch -->
+                <path d="M30 118 L30 70 Q30 10 170 10 Q310 10 310 70 L310 118"
+                      stroke="rgba(180,140,60,0.5)" stroke-width="1" fill="none"/>
+                <!-- Inner arch -->
+                <path d="M50 118 L50 72 Q50 32 170 32 Q290 32 290 72 L290 118"
+                      stroke="rgba(180,140,60,0.25)" stroke-width="1" fill="none"/>
+                <!-- Center keystone -->
+                <path d="M155 10 L170 2 L185 10" stroke="rgba(180,140,60,0.6)" stroke-width="1" fill="none"/>
+                <!-- Small decorative circles -->
+                <circle cx="170" cy="2" r="3" fill="rgba(180,140,60,0.5)"/>
+                <circle cx="30" cy="118" r="2.5" fill="rgba(180,140,60,0.35)"/>
+                <circle cx="310" cy="118" r="2.5" fill="rgba(180,140,60,0.35)"/>
+                <!-- Base line -->
+                <line x1="0" y1="118" x2="340" y2="118" stroke="rgba(180,140,60,0.2)" stroke-width="1"/>
+                <!-- Side pillars detail -->
+                <line x1="30" y1="118" x2="30" y2="105" stroke="rgba(180,140,60,0.6)" stroke-width="2"/>
+                <line x1="310" y1="118" x2="310" y2="105" stroke="rgba(180,140,60,0.6)" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- Main card -->
+        <div class="card">
+            <p class="location">Tlemcen, Algerie</p>
+            <h1 class="title-arabic">Palais El-Mechouar</h1>
+            <p class="title-sub">Visite Virtuelle Immersive &nbsp;-&nbsp; 360 deg</p>
+
+            <div class="divider-ornament">
+                <span></span>
+                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1 L9.5 6 L15 6 L10.5 9.5 L12 15 L8 11.5 L4 15 L5.5 9.5 L1 6 L6.5 6 Z"/>
+                </svg>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Loading bar -->
+        <div class="loading-bar-wrap">
+            <div class="loading-label">Chargement en cours</div>
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewer"></div>
+</body>
+</html>
