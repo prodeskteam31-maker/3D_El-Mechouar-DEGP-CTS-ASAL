@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "3D Virtual Tour of El Mechouar Mosque, Tlemcen"
+version: 1.0.0
+date-released: 2026-06-18
+doi: 10.5281/zenodo.20744149
+url: "https://prodeskteam31-maker.github.io/3D_El-Mechouar-DEGP-CTS-ASAL/"
+repository-code: "https://github.com/prodeskteam31-maker/3D_El-Mechouar-DEGP-CTS-ASAL"
+license: CC-BY-4.0
+authors:
+  - family-names: Benabdallah
+    affiliation: "Centre des Techniques Spatiales (CTS), Agence Spatiale Algérienne (ASAL)"
+  - family-names: Karoui
+    affiliation: "Centre des Techniques Spatiales (CTS), Agence Spatiale Algérienne (ASAL)"
+  - family-names: Benkreira
+    affiliation: "Centre des Techniques Spatiales (CTS), Agence Spatiale Algérienne (ASAL)"
+keywords:
+  - "virtual tour"
+  - "cultural heritage"
+  - "3D documentation"
+  - "El Mechouar Mosque"
+  - "Tlemcen"
+  - "Algeria"
+  - "photogrammetry"
+  - "LiDAR"
